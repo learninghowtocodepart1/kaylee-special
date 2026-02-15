@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .hidden { display: none; }
+        .button { padding: 10px 20px; font-size: 16px; }
+        .status-bar { width: 100%; background: #eee; height: 20px; }
+        .victory { color: green; font-size: 24px; }
+        .bubble { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div id="proposal">
+        <h1>Will you go on a date with me?</h1>
+        <div id="status-bar" class="status-bar"></div>
+        <button id="yes-button" class="button">Yes</button>
+        <button id="no-button" class="button">No</button>
+    </div>
+    <div id="message-bubbles" class="hidden"></div>
+    <div id="victory-screen" class="hidden">
+        <p class="victory">Hooray! 🎉 You said yes!</p>
+        <p>Can't wait to spend time with you, Kaylee!</p>
+    </div>
+    <script>
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+        const messageBubbles = document.getElementById('message-bubbles');
+        const victoryScreen = document.getElementById('victory-screen');
+        const statusBar = document.getElementById('status-bar');
+
+        yesButton.addEventListener('click', () => {
+            showVictory();
+        });
+
+        noButton.addEventListener('click', () => {
+            showMessage('Maybe another time!');
+        });
+
+        function showVictory() {
+            proposal.style.display = 'none';
+            victoryScreen.classList.remove('hidden');
+        }
+
+        function showMessage(message) {
+            const bubble = document.createElement('p');
+            bubble.className = 'bubble';
+            bubble.innerText = message;
+            messageBubbles.appendChild(bubble);
+            messageBubbles.classList.remove('hidden');
+            updateStatusBar();
+        }
+
+        function updateStatusBar() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                if (progress < 100) {
+                    progress += 10;
+                    statusBar.style.width = progress + '%';
+                } else {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+    </script>
+</body>
+</html>
