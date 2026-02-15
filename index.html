@@ -2,70 +2,763 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proposal</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>💗 for kaylee 💗</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .hidden { display: none; }
-        .button { padding: 10px 20px; font-size: 16px; }
-        .status-bar { width: 100%; background: #eee; height: 20px; }
-        .victory { color: green; font-size: 24px; }
-        .bubble { margin: 10px 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #ffd1e6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        
+        .phone-frame {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .container {
+            background: #fff;
+            border-radius: 40px;
+            padding: 25px 20px;
+            box-shadow: 0 25px 60px rgba(255, 105, 180, 0.2);
+            text-align: center;
+            position: relative;
+            animation: containerPop 0.5s ease;
+            border: 2px solid #ffb3d9;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes containerPop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .status-bar {
+            background: #ff99cc;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 100px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border: 2px solid #ff80b3;
+            position: relative;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin: 15px 0;
+            color: #ff4d94;
+            font-weight: 700;
+            line-height: 1.3;
+            position: relative;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+        
+        .message-bubble {
+            background: #fff0f5;
+            padding: 20px 15px;
+            border-radius: 30px;
+            margin: 20px 0;
+            border: 2px solid #ff99cc;
+            min-height: 80px;
+            font-size: 1.2rem;
+            color: #666;
+            z-index: 10;
+            position: relative;
+            transition: opacity 0.3s ease;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 0;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff99cc;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0 15px;
+            justify-content: center;
+            align-items: center;
+            min-height: 120px;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .yes-btn {
+            background: #ff99cc;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-appearance: none;
+            touch-action: manipulation;
+            color: white;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 0 #ff4d94;
+            padding: 20px 40px;
+            min-width: 120px;
+            position: relative;
+            z-index: 30;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            transform: scale(1);
+            transform-origin: center;
+        }
+        
+        .yes-btn:active {
+            transform: translateY(4px) scale(1) !important;
+            box-shadow: 0 0 0 #ff4d94;
+        }
+        
+        .no-btn {
+            background: #b3b3b3;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-appearance: none;
+            touch-action: manipulation;
+            color: white;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 0 #808080;
+            padding: 20px 40px;
+            min-width: 120px;
+            position: relative;
+            z-index: 30;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            transform: scale(1);
+            transform-origin: center;
+        }
+        
+        .no-btn:active {
+            transform: translateY(4px) scale(1) !important;
+            box-shadow: 0 0 0 #808080;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4d94;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            z-index: 9999;
+            animation: slideUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+            border: 2px solid white;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        
+        .floating {
+            animation: float 2s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(var(--scale, 1)); }
+            50% { transform: translateY(-5px) scale(var(--scale, 1)); }
+        }
+        
+        .final-message {
+            background: #fff0f5;
+            padding: 30px 20px;
+            border-radius: 40px;
+            margin: 20px 0;
+            border: 3px solid #ff99cc;
+            animation: popIn 0.5s ease;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .counter-badge {
+            background: #ffe6f0;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+            margin: 5px;
+            color: #ff4d94;
+            border: 2px solid #ffb3d9;
+            position: relative;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+        
+        .secret-spot {
+            font-size: 0.8rem;
+            color: #ffb3d9;
+            margin-top: 15px;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+        
+        .personal-message {
+            font-size: 1.1rem;
+            color: #ff4d94;
+            margin-top: 20px;
+            line-height: 1.6;
+            background: white;
+            padding: 15px;
+            border-radius: 30px;
+            border: 2px solid #ffb3d9;
+        }
+        
+        .fullscreen-takeover {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            font-size: 4rem !important;
+            z-index: 99999 !important;
+            margin: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transform: scale(1) !important;
+            box-shadow: none !important;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 380px) {
+            h1 { font-size: 1.8rem; }
+            .yes-btn, .no-btn { 
+                font-size: 1.3rem; 
+                padding: 15px 30px;
+                min-width: 100px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="proposal">
-        <h1>Will you go on a date with me?</h1>
-        <div id="status-bar" class="status-bar"></div>
-        <button id="yes-button" class="button">Yes</button>
-        <button id="no-button" class="button">No</button>
+    <div class="phone-frame">
+        <!-- Screen 1: Initial Question -->
+        <div id="screen1" class="container">
+            <div class="status-bar" id="statusBar">💗 for kaylee 💗</div>
+            
+            <h1>so i gotta ask...</h1>
+            
+            <div class="message-bubble">
+                <div class="typing-indicator" id="typingIndicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+                <p id="screen1Message">will you be my girlfriend?</p>
+            </div>
+            
+            <div class="button-container" id="buttonContainer1">
+                <button class="yes-btn" id="yesBtn1" onclick="handleFirstYes()">yes</button>
+                <button class="no-btn" id="noBtn1" onclick="handleFirstNo()">no</button>
+            </div>
+            
+            <div class="counter-badge" id="firstNoCounter">
+                ❌ no's: 0
+            </div>
+            
+            <div class="secret-spot" id="secretSpot1">💭 kaylee 💭</div>
+        </div>
+        
+        <!-- Screen 2: Second Thoughts -->
+        <div id="screen2" class="container hidden">
+            <div class="status-bar" id="statusBar2" style="background: #ff99cc;">🤔 wait for real? 🤔</div>
+            
+            <h1>REALLY?</h1>
+            
+            <div class="message-bubble">
+                <p id="screen2Message">you'll actually be my girlfriend?</p>
+                <p id="screen2SubMessage" style="font-size: 0.9rem; margin-top: 10px; color: #ff80b3;">like for real?</p>
+            </div>
+            
+            <div class="button-container" id="buttonContainer2">
+                <button class="yes-btn" id="yesBtn2" onclick="handleSecondYes()">yes</button>
+                <button class="no-btn" id="noBtn2" onclick="handleSecondNo()">no</button>
+            </div>
+            
+            <div class="counter-badge" id="secondNoCounter">
+                ❌ times you said no: 0
+            </div>
+            
+            <div class="secret-spot" id="crueltyMeter">💔</div>
+        </div>
+        
+        <!-- Screen 3: Victory -->
+        <div id="screen3" class="container hidden">
+            <div class="status-bar" style="background: #ff99cc;">🎉 finally! 🎉</div>
+            
+            <div class="final-message">
+                <h1 style="font-size: 2.5rem; margin-bottom: 20px;">LET'S GOOO</h1>
+                
+                <p style="font-size: 1.3rem; margin: 20px 0;">
+                    im so happy you said yes
+                </p>
+                
+                <p style="font-size: 1.2rem; margin: 25px 0; background: white; padding: 20px; border-radius: 30px; border: 2px solid #ffb3d9;">
+                    i love you so much and im so excited that you're finally my girlfriend.
+                </p>
+                
+                <div style="margin: 30px 0;">
+                    <p style="font-size: 1.1rem; margin: 10px 0;">✅ get sushi together</p>
+                    <p style="font-size: 1.1rem; margin: 10px 0;">✅ go on actual dates</p>
+                    <p style="font-size: 1.1rem; margin: 10px 0;">✅ watch more movies together</p>
+                    <p style="font-size: 1.1rem; margin: 10px 0;">✅ hang out irl</p>
+                </div>
+                
+                <p style="font-size: 1.2rem; margin-top: 20px;">
+                    now come here
+                </p>
+                
+                <div class="personal-message">
+                    i love you so much kaylee, i cant wait to do so many things with you as you're my girlfriend now ❤️
+                </div>
+                
+                <span style="font-size: 3rem; display: block; margin-top: 20px;">💗</span>
+            </div>
+            
+            <div class="secret-spot" onclick="resetEverything()" style="margin-top: 20px;">✨</div>
+        </div>
     </div>
-    <div id="message-bubbles" class="hidden"></div>
-    <div id="victory-screen" class="hidden">
-        <p class="victory">Hooray! 🎉 You said yes!</p>
-        <p>Can't wait to spend time with you, Kaylee!</p>
-    </div>
+
     <script>
-        const yesButton = document.getElementById('yes-button');
-        const noButton = document.getElementById('no-button');
-        const messageBubbles = document.getElementById('message-bubbles');
-        const victoryScreen = document.getElementById('victory-screen');
-        const statusBar = document.getElementById('status-bar');
-
-        yesButton.addEventListener('click', () => {
-            showVictory();
-        });
-
-        noButton.addEventListener('click', () => {
-            showMessage('Maybe another time!');
-        });
-
-        function showVictory() {
-            proposal.style.display = 'none';
-            victoryScreen.classList.remove('hidden');
+        // State variables
+        let firstNoCount = 0;
+        let secondNoCount = 0;
+        let firstYesClicked = false;
+        let secondYesClicked = false;
+        
+        // Screen 1: Handle NO - Button keeps shrinking, YES button GROWS
+        window.handleFirstNo = function() {
+            if (firstYesClicked) return;
+            
+            firstNoCount++;
+            
+            // Update counter
+            document.getElementById('firstNoCounter').innerHTML = `❌ no's: ${firstNoCount}`;
+            
+            // Get buttons and elements
+            const noBtn = document.getElementById('noBtn1');
+            const yesBtn = document.getElementById('yesBtn1');
+            const messageBubble = document.querySelector('#screen1 .message-bubble');
+            const h1 = document.querySelector('#screen1 h1');
+            const statusBar = document.getElementById('statusBar');
+            const counter = document.getElementById('firstNoCounter');
+            const secretSpot = document.getElementById('secretSpot1');
+            
+            // Make NO button progressively smaller (still clickable)
+            if (firstNoCount === 1) {
+                noBtn.style.transform = 'scale(0.8)';
+                document.getElementById('screen1Message').innerHTML = "wait fr?";
+            } else if (firstNoCount === 2) {
+                noBtn.style.transform = 'scale(0.6)';
+                document.getElementById('screen1Message').innerHTML = "that's kinda mean";
+            } else if (firstNoCount === 3) {
+                noBtn.style.transform = 'scale(0.4)';
+                document.getElementById('screen1Message').innerHTML = "why would you do this";
+            } else if (firstNoCount === 4) {
+                noBtn.style.transform = 'scale(0.3)';
+                document.getElementById('screen1Message').innerHTML = "the button is disappearing...";
+            } else if (firstNoCount === 5) {
+                noBtn.style.transform = 'scale(0.2)';
+                document.getElementById('screen1Message').innerHTML = "can you even see it?";
+            } else if (firstNoCount === 6) {
+                noBtn.style.transform = 'scale(0.15)';
+                document.getElementById('screen1Message').innerHTML = "it's so tiny now";
+            } else if (firstNoCount === 7) {
+                noBtn.style.transform = 'scale(0.1)';
+                noBtn.style.opacity = '0.5';
+                document.getElementById('screen1Message').innerHTML = "almost invisible...";
+            } else if (firstNoCount === 8) {
+                noBtn.style.transform = 'scale(0.05)';
+                noBtn.style.opacity = '0.2';
+                document.getElementById('screen1Message').innerHTML = "where did it go?";
+            } else if (firstNoCount >= 9) {
+                noBtn.style.transform = 'scale(0)';
+                noBtn.style.opacity = '0';
+                noBtn.style.pointerEvents = 'none';
+                document.getElementById('screen1Message').innerHTML = "okay the button is gone now";
+                document.getElementById('secretSpot1').innerHTML = "👀 just say yes kaylee";
+            }
+            
+            // MAKE YES BUTTON GROW with each NO press
+            const yesScale = 1 + (firstNoCount * 0.2);
+            yesBtn.style.transform = `scale(${yesScale})`;
+            yesBtn.style.zIndex = '1000';
+            
+            // Make other elements fade as YES button grows
+            const fadeAmount = Math.max(0, 1 - (firstNoCount * 0.1));
+            messageBubble.style.opacity = fadeAmount;
+            h1.style.opacity = fadeAmount;
+            statusBar.style.opacity = fadeAmount;
+            counter.style.opacity = fadeAmount;
+            secretSpot.style.opacity = fadeAmount;
+            
+            // After 7 NOs, YES button starts to take over the screen
+            if (firstNoCount >= 7) {
+                // Get button position and size
+                const btnRect = yesBtn.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // Calculate scale needed to cover screen
+                const scaleNeeded = Math.max(
+                    viewportWidth / btnRect.width * 1.5,
+                    viewportHeight / btnRect.height * 1.5
+                );
+                
+                yesBtn.style.transform = `scale(${scaleNeeded})`;
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.top = btnRect.top + 'px';
+                yesBtn.style.left = btnRect.left + 'px';
+                yesBtn.style.width = btnRect.width + 'px';
+                yesBtn.style.height = btnRect.height + 'px';
+                yesBtn.style.transition = 'all 0.3s ease';
+                
+                // Force reflow
+                void yesBtn.offsetWidth;
+                
+                // Animate to fullscreen
+                yesBtn.style.top = '0';
+                yesBtn.style.left = '0';
+                yesBtn.style.width = '100vw';
+                yesBtn.style.height = '100vh';
+                yesBtn.style.borderRadius = '0';
+                yesBtn.style.fontSize = '4rem';
+            }
+            
+            // At 8+ NOs, make it absolutely fullscreen
+            if (firstNoCount >= 8) {
+                yesBtn.classList.add('fullscreen-takeover');
+                yesBtn.style.transform = 'scale(1)';
+            }
+            
+            // Add floating animation
+            yesBtn.classList.add('floating');
+            
+            // Show toast
+            showToast('😢 ouch', 800);
+        };
+        
+        // Screen 1: Handle YES
+        window.handleFirstYes = function() {
+            if (firstYesClicked) return;
+            firstYesClicked = true;
+            
+            // Hide screen 1, show screen 2
+            document.getElementById('screen1').classList.add('hidden');
+            document.getElementById('screen2').classList.remove('hidden');
+            
+            // Reset screen 2
+            secondNoCount = 0;
+            document.getElementById('secondNoCounter').innerHTML = '❌ times you said no: 0';
+            document.getElementById('crueltyMeter').innerHTML = '💔';
+            
+            // Reset NO button
+            const noBtn = document.getElementById('noBtn2');
+            noBtn.style.transform = 'scale(1)';
+            noBtn.style.opacity = '1';
+            noBtn.style.pointerEvents = 'auto';
+            noBtn.style.position = 'relative';
+            noBtn.style.width = 'auto';
+            noBtn.style.height = 'auto';
+            noBtn.style.fontSize = '1.5rem';
+            noBtn.style.borderRadius = '60px';
+            noBtn.classList.remove('fullscreen-takeover');
+            
+            // Reset YES button
+            const yesBtn = document.getElementById('yesBtn2');
+            yesBtn.style.transform = 'scale(1)';
+            yesBtn.style.position = 'relative';
+            yesBtn.style.top = 'auto';
+            yesBtn.style.left = 'auto';
+            yesBtn.style.width = 'auto';
+            yesBtn.style.height = 'auto';
+            yesBtn.style.fontSize = '1.5rem';
+            yesBtn.style.borderRadius = '60px';
+            yesBtn.classList.remove('fullscreen-takeover');
+            
+            // Reset all opacities
+            document.querySelector('#screen2 .message-bubble').style.opacity = '1';
+            document.querySelector('#screen2 h1').style.opacity = '1';
+            document.getElementById('statusBar2').style.opacity = '1';
+            document.getElementById('secondNoCounter').style.opacity = '1';
+            document.getElementById('crueltyMeter').style.opacity = '1';
+            
+            showToast('wait really? 🤔', 1500);
+        };
+        
+        // Screen 2: Handle NO - Progressive shrinking with YES button TAKEOVER
+        window.handleSecondNo = function() {
+            secondNoCount++;
+            
+            // Update counter
+            document.getElementById('secondNoCounter').innerHTML = `❌ times you said no: ${secondNoCount}`;
+            
+            // Get buttons and elements
+            const noBtn = document.getElementById('noBtn2');
+            const yesBtn = document.getElementById('yesBtn2');
+            const messageBubble = document.querySelector('#screen2 .message-bubble');
+            const h1 = document.querySelector('#screen2 h1');
+            const statusBar = document.getElementById('statusBar2');
+            const counter = document.getElementById('secondNoCounter');
+            const crueltyMeter = document.getElementById('crueltyMeter');
+            
+            // Progressive button shrinkage with messages
+            if (secondNoCount === 1) {
+                noBtn.style.transform = 'scale(0.8)';
+                document.getElementById('screen2Message').innerHTML = "that's so mean :(";
+                document.getElementById('screen2SubMessage').innerHTML = "why would you press this...";
+                document.getElementById('crueltyMeter').innerHTML = "💔";
+            } 
+            else if (secondNoCount === 2) {
+                noBtn.style.transform = 'scale(0.6)';
+                document.getElementById('screen2Message').innerHTML = "you're really gonna do this?";
+                document.getElementById('screen2SubMessage').innerHTML = "the button is shrinking";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔";
+            }
+            else if (secondNoCount === 3) {
+                noBtn.style.transform = 'scale(0.4)';
+                document.getElementById('screen2Message').innerHTML = "the button is crying";
+                document.getElementById('screen2SubMessage').innerHTML = "look what you're doing";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔💔";
+            }
+            else if (secondNoCount === 4) {
+                noBtn.style.transform = 'scale(0.3)';
+                document.getElementById('screen2Message').innerHTML = "it's getting hard to see";
+                document.getElementById('screen2SubMessage').innerHTML = "one more and it's almost gone";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔💔💔";
+            }
+            else if (secondNoCount === 5) {
+                noBtn.style.transform = 'scale(0.2)';
+                document.getElementById('screen2Message').innerHTML = "can you still find it?";
+                document.getElementById('screen2SubMessage').innerHTML = "it's still there... somewhere";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔💔💔💔";
+            }
+            else if (secondNoCount === 6) {
+                noBtn.style.transform = 'scale(0.15)';
+                noBtn.style.opacity = '0.5';
+                document.getElementById('screen2Message').innerHTML = "it's basically invisible now";
+                document.getElementById('screen2SubMessage').innerHTML = "but you can still click it";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔💔💔💔💔";
+            }
+            else if (secondNoCount === 7) {
+                noBtn.style.transform = 'scale(0.1)';
+                noBtn.style.opacity = '0.3';
+                document.getElementById('screen2Message').innerHTML = "where did it go?";
+                document.getElementById('screen2SubMessage').innerHTML = "click where it used to be";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔💔💔💔💔💔";
+            }
+            else if (secondNoCount === 8) {
+                noBtn.style.transform = 'scale(0.05)';
+                noBtn.style.opacity = '0.1';
+                document.getElementById('screen2Message').innerHTML = "it's practically gone";
+                document.getElementById('screen2SubMessage').innerHTML = "just say yes already";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔💔💔💔💔💔💔";
+            }
+            else if (secondNoCount >= 9) {
+                noBtn.style.transform = 'scale(0)';
+                noBtn.style.opacity = '0';
+                noBtn.style.pointerEvents = 'none';
+                document.getElementById('screen2Message').innerHTML = "okay the button is gone";
+                document.getElementById('screen2SubMessage').innerHTML = "you have to say yes now";
+                document.getElementById('crueltyMeter').innerHTML = "💔💔💔💔💔💔💔💔💔";
+            }
+            
+            // MAKE YES BUTTON GROW with each NO press
+            const yesScale = 1 + (secondNoCount * 0.25);
+            yesBtn.style.transform = `scale(${yesScale})`;
+            yesBtn.style.zIndex = '1000';
+            
+            // Make other elements fade
+            const fadeAmount = Math.max(0, 1 - (secondNoCount * 0.1));
+            messageBubble.style.opacity = fadeAmount;
+            h1.style.opacity = fadeAmount;
+            statusBar.style.opacity = fadeAmount;
+            counter.style.opacity = fadeAmount;
+            crueltyMeter.style.opacity = fadeAmount;
+            
+            // After 6 NOs, YES button starts to take over the screen
+            if (secondNoCount >= 6) {
+                // Get button position and size
+                const btnRect = yesBtn.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // Calculate scale needed to cover screen
+                const scaleNeeded = Math.max(
+                    viewportWidth / btnRect.width * 1.5,
+                    viewportHeight / btnRect.height * 1.5
+                );
+                
+                yesBtn.style.transform = `scale(${scaleNeeded})`;
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.top = btnRect.top + 'px';
+                yesBtn.style.left = btnRect.left + 'px';
+                yesBtn.style.width = btnRect.width + 'px';
+                yesBtn.style.height = btnRect.height + 'px';
+                yesBtn.style.transition = 'all 0.3s ease';
+                
+                // Force reflow
+                void yesBtn.offsetWidth;
+                
+                // Animate to fullscreen
+                yesBtn.style.top = '0';
+                yesBtn.style.left = '0';
+                yesBtn.style.width = '100vw';
+                yesBtn.style.height = '100vh';
+                yesBtn.style.borderRadius = '0';
+                yesBtn.style.fontSize = '4rem';
+            }
+            
+            // At 8+ NOs, make it absolutely fullscreen
+            if (secondNoCount >= 8) {
+                yesBtn.classList.add('fullscreen-takeover');
+                yesBtn.style.transform = 'scale(1)';
+            }
+            
+            // Add floating animation
+            yesBtn.classList.add('floating');
+            
+            showToast('😭', 800);
+        };
+        
+        // Screen 2: Handle YES (victory)
+        window.handleSecondYes = function() {
+            if (secondYesClicked) return;
+            secondYesClicked = true;
+            
+            // Hide screen 2, show screen 3
+            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen3').classList.remove('hidden');
+            
+            // Celebration
+            showToast('🎉 FINALLY KAYLEE!! 🎉', 2000);
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(200);
+            }
+            
+            // Confetti effect
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createCelebration();
+                }, i * 100);
+            }
+        };
+        
+        // Helper functions
+        function showToast(message, duration) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, duration);
         }
-
-        function showMessage(message) {
-            const bubble = document.createElement('p');
-            bubble.className = 'bubble';
-            bubble.innerText = message;
-            messageBubbles.appendChild(bubble);
-            messageBubbles.classList.remove('hidden');
-            updateStatusBar();
+        
+        function createCelebration() {
+            const emojis = ['💗', '🎉', '✨', '💕', '🎸', '🌸', '❤️', '🥳'];
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.style.background = '#ff99cc';
+            toast.style.fontSize = '2rem';
+            toast.style.padding = '10px';
+            toast.style.animation = 'none';
+            toast.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            toast.style.left = Math.random() * 90 + '%';
+            toast.style.top = Math.random() * 90 + '%';
+            toast.style.bottom = 'auto';
+            toast.style.transform = 'none';
+            toast.style.position = 'fixed';
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 800);
         }
-
-        function updateStatusBar() {
-            let progress = 0;
-            const interval = setInterval(() => {
-                if (progress < 100) {
-                    progress += 10;
-                    statusBar.style.width = progress + '%';
-                } else {
-                    clearInterval(interval);
+        
+        window.resetEverything = function() {
+            window.location.reload();
+        };
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide typing indicator after delay
+            setTimeout(() => {
+                document.getElementById('typingIndicator').style.display = 'none';
+            }, 2000);
+            
+            // Secret spot interaction
+            document.getElementById('secretSpot1').addEventListener('click', function() {
+                this.innerHTML = this.innerHTML === '💭 kaylee 💭' ? 'just say yes kaylee 🙏' : '💭 kaylee 💭';
+            });
+            
+            // Rotate status bar messages
+            const messages = ['💗 for kaylee 💗', '💕 important 💕', '🎸 read this 🎸', '🌸 kaylee 🌸'];
+            let index = 0;
+            setInterval(() => {
+                if (!firstYesClicked) {
+                    index = (index + 1) % messages.length;
+                    document.getElementById('statusBar').innerHTML = messages[index];
                 }
-            }, 100);
-        }
+            }, 3000);
+        });
     </script>
 </body>
 </html>
